@@ -1,6 +1,6 @@
 # WorkManager OOM
 
-This project demonstrates how the `GreedyScheduler.mConstrainedWorkSpecs` can grow unbounded, as well as `SerialExecutor.mTasks` due to worker constraints. In degenerate cases, this can cause OOM errors.
+This project demonstrates how the `GreedyScheduler.mConstrainedWorkSpecs` can grow unbounded, as well as `SerialExecutor.mTasks` due to worker constraints. In degenerate cases, this can cause OOM errors. Filed at https://issuetracker.google.com/issues/235259756
 
 ## Repro
 * Put your emulator/device into airplane mode
