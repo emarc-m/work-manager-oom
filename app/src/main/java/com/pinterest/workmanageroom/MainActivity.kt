@@ -5,13 +5,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.BackoffPolicy
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
-import androidx.work.Worker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -22,20 +16,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        WorkManager.getInstance(this).enqueue(
-            OneTimeWorkRequest.Builder(MyWorker::class.java)
-                .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
-                .setBackoffCriteria(
-                    BackoffPolicy.EXPONENTIAL,
-                    OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
-                    TimeUnit.MILLISECONDS
+        val workManager = WorkManager.getInstance(this)
+        for (i in 1..50) {
+            Log.i("MyWorker", "Queueing $i worker")
+            val worker = OneTimeWorkRequest.Builder(MyWorker::class.java)
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
                 )
                 .build()
-        )
+            val uniqueName = "Worker-$i"
+            workManager.enqueueUniqueWork(uniqueName, ExistingWorkPolicy.KEEP, worker)
+        }
     }
 }
 
-class MyWorker(context: Context, workerParameters: WorkerParameters) : Worker(context, workerParameters) {
+class MyWorker(context: Context, workerParameters: WorkerParameters) :
+    Worker(context, workerParameters) {
     override fun doWork(): Result {
         Log.i("MyWorker", "Working")
         return Result.success()
