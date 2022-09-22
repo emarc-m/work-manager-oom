@@ -26,17 +26,17 @@ class MainActivity : AppCompatActivity() {
             val uniqueName = "Worker-$i"
 
             val worker = OneTimeWorkRequestBuilder<MyRxWorker>()
-                .setInputData(workDataOf(WORKER_NAME to "$uniqueName - part 1"))
+                .setInputData(workDataOf(WORKER_NAME to "$uniqueName - work chain 1"))
                 .setConstraints(constraint)
                 .build()
 
             val worker2 = OneTimeWorkRequestBuilder<MyRxWorker>()
-                .setInputData(workDataOf(WORKER_NAME to "$uniqueName - part 2"))
+                .setInputData(workDataOf(WORKER_NAME to "$uniqueName - work chain 2"))
                 .setConstraints(constraint)
                 .build()
 
             val worker3 = OneTimeWorkRequestBuilder<MyRxWorker>()
-                .setInputData(workDataOf(WORKER_NAME to "$uniqueName - part 3"))
+                .setInputData(workDataOf(WORKER_NAME to "$uniqueName - work chain 3"))
                 .setConstraints(constraint)
                 .build()
 
